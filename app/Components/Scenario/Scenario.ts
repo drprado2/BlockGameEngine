@@ -1,6 +1,4 @@
-abstract class Scenario implements IMoveAble{
-
-    abstract move(direction: Keys, distance: number): void;
+abstract class Scenario {
 
     public template: string;
     public widthCanvas: number;

@@ -2,8 +2,13 @@ class Rectangle{
 
     public positionX: number;
     public positionY: number;
-    public width: number;
-    public height: number;
+    public width: number = globalBlockWidth;
+    public height: number = globalBlockHeight;
+    public itsCollide: boolean;
+
+    constructor(itsCollide: boolean = false){
+        this.itsCollide = itsCollide;
+    }
 
     draw(canvas: CanvasManipulator): void{
         canvas.contextCanvas.fillRect(this.positionX, this.positionY, this.width, this.height);

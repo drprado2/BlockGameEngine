@@ -1,10 +1,13 @@
-var Directoins;
-(function (Directoins) {
-    Directoins[Directoins["up"] = 1] = "up";
-    Directoins[Directoins["right"] = 2] = "right";
-    Directoins[Directoins["down"] = 3] = "down";
-    Directoins[Directoins["left"] = 4] = "left";
-})(Directoins || (Directoins = {}));
+var globalBlockWidth = 10;
+var globalBlockHeight = 10;
+var globalDistanceMove = 5;
+var Directions;
+(function (Directions) {
+    Directions[Directions["up"] = 1] = "up";
+    Directions[Directions["right"] = 2] = "right";
+    Directions[Directions["down"] = 3] = "down";
+    Directions[Directions["left"] = 4] = "left";
+})(Directions || (Directions = {}));
 var Keys;
 (function (Keys) {
     Keys[Keys["KEY_DOWN"] = 40] = "KEY_DOWN";
@@ -14,6 +17,8 @@ var Keys;
 })(Keys || (Keys = {}));
 var Rectangle = (function () {
     function Rectangle() {
+        this.width = globalBlockWidth;
+        this.height = globalBlockHeight;
     }
     Rectangle.prototype.draw = function (canvas) {
         canvas.contextCanvas.fillRect(this.positionX, this.positionY, this.width, this.height);
@@ -27,6 +32,70 @@ var ObjectDefault = (function () {
     function ObjectDefault(bodyBlocks) {
         this.bodyBlocks = bodyBlocks;
     }
+    ObjectDefault.prototype.move = function (direction, distance) {
+        if (distance === void 0) { distance = globalDistanceMove; }
+        switch (direction) {
+            case Directions.up: {
+                this.moveUp(distance);
+                break;
+            }
+            case Directions.down: {
+                this.moveDown(distance);
+                break;
+            }
+            case Directions.left: {
+                this.moveLeft(distance);
+                break;
+            }
+            case Directions.right: {
+                this.moveRight(distance);
+                break;
+            }
+        }
+    };
+    ObjectDefault.prototype.moveUp = function (distance) {
+        var lastBlock = this.bodyBlocks[this.bodyBlocks.length - 1];
+        var firstBlock = this.bodyBlocks[0];
+        var newPositionX = firstBlock.positionX;
+        var newPositionY = firstBlock.positionY - distance;
+        var blocksOutLastBLock = this.bodyBlocks.slice(0, this.bodyBlocks.length - 1);
+        var newBlocks = new Array();
+        newBlocks.push(this.bodyBlocks[this.bodyBlocks.length - 1]);
+        this.bodyBlocks = newBlocks.concat(blocksOutLastBLock);
+    };
+    ObjectDefault.prototype.moveRight = function (distance) {
+        var lastBlock = this.bodyBlocks[this.bodyBlocks.length - 1];
+        var firstBlock = this.bodyBlocks[0];
+        var newPositionX = firstBlock.positionX + distance;
+        var newPositionY = firstBlock.positionY;
+        var blocksOutLastBLock = this.bodyBlocks.slice(0, this.bodyBlocks.length - 1);
+        var newBlocks = new Array();
+        newBlocks.push(this.bodyBlocks[this.bodyBlocks.length - 1]);
+        this.bodyBlocks = newBlocks.concat(blocksOutLastBLock);
+    };
+    ObjectDefault.prototype.moveDown = function (distance) {
+        var lastBlock = this.bodyBlocks[this.bodyBlocks.length - 1];
+        var firstBlock = this.bodyBlocks[0];
+        var newPositionX = firstBlock.positionX;
+        var newPositionY = firstBlock.positionY + distance;
+        var blocksOutLastBLock = this.bodyBlocks.slice(0, this.bodyBlocks.length - 1);
+        var newBlocks = new Array();
+        newBlocks.push(this.bodyBlocks[this.bodyBlocks.length - 1]);
+        this.bodyBlocks = newBlocks.concat(blocksOutLastBLock);
+    };
+    ObjectDefault.prototype.moveLeft = function (distance) {
+        var lastBlock = this.bodyBlocks[this.bodyBlocks.length - 1];
+        var firstBlock = this.bodyBlocks[0];
+        var newPositionX = firstBlock.positionX - distance;
+        var newPositionY = firstBlock.positionY;
+        var blocksOutLastBLock = this.bodyBlocks.slice(0, this.bodyBlocks.length - 1);
+        var newBlocks = new Array();
+        newBlocks.push(this.bodyBlocks[this.bodyBlocks.length - 1]);
+        this.bodyBlocks = newBlocks.concat(blocksOutLastBLock);
+    };
+    ObjectDefault.prototype.getBodyBlocks = function () {
+        return new Array().concat(this.bodyBlocks);
+    };
     ObjectDefault.prototype.draw = function (canvas) {
         this.bodyBlocks.forEach(function (block) { return block.draw(canvas.contextCanvas); });
     };
@@ -35,22 +104,6 @@ var ObjectDefault = (function () {
     };
     ObjectDefault.prototype.selfDestroy = function (canvas) {
         this.bodyBlocks.forEach(function (block) { return block.selfDestroy(canvas.contextCanvas); });
-    };
-    ObjectDefault.prototype.willCollide = function (targetObject) {
-        this.bodyBlocks.forEach(function (block) {
-            targetObject.bodyBlocks.forEach(function (blockTarget) {
-                var distanceX = block.positionX - blockTarget.positionX;
-                distanceX = distanceX >= 0 ? distanceX : distanceX * -1;
-                if (distanceX >= 0 && distanceX < blockTarget.width) {
-                    var distanceY = block.positionY - blockTarget.positionY;
-                    distanceY = distanceY >= 0 ? distanceY : distanceY * -1;
-                    if (distanceY >= 0 && distanceY < blockTarget.height) {
-                        return true;
-                    }
-                }
-            });
-        });
-        return false;
     };
     return ObjectDefault;
 }());
@@ -99,20 +152,30 @@ var CanvasManipulator = (function () {
     };
     return CanvasManipulator;
 }());
-var FrictionControl = (function () {
-    function FrictionControl() {
+var CollisionControl = (function () {
+    function CollisionControl() {
     }
-    FrictionControl.prototype.haveFriction = function (objectsScenario, objectMoved) {
-        var collide = false;
-        objectsScenario.forEach(function (object) {
-            collide = object.willCollide(objectMoved);
-            if (collide)
-                return collide;
+    CollisionControl.prototype.willCollide = function (objectsScenario, objectMoved) {
+        objectsScenario.forEach(function (objectScenario) {
+            objectScenario.getBodyBlocks().forEach(function (blockObjectScenario) {
+                objectMoved.getBodyBlocks().forEach(function (blockObjectMoved) {
+                    var distanceX = blockObjectMoved.positionX - blockObjectScenario.positionX;
+                    distanceX = distanceX >= 0 ? distanceX : distanceX * -1;
+                    if (distanceX >= 0 && distanceX < blockObjectMoved.width) {
+                        var distanceY = blockObjectMoved.positionY - blockObjectScenario.positionY;
+                        distanceY = distanceY >= 0 ? distanceY : distanceY * -1;
+                        if (distanceY >= 0 && distanceY < blockObjectMoved.height) {
+                            return true;
+                        }
+                    }
+                });
+            });
         });
-        return collide;
+        return false;
     };
-    return FrictionControl;
+    return CollisionControl;
 }());
+/// <reference path="./../../Globais/Configurations.ts" />
 /// <reference path="./../../Globais/Directions.ts" />
 /// <reference path="./../../Globais/Keys.ts" />
 /// <reference path="../../Interfaces/IMoveAble.ts" />
@@ -120,9 +183,9 @@ var FrictionControl = (function () {
 /// <reference path="./../../Components/ObjectDefault/ObjectDefault.ts" />
 /// <reference path="./../Scenario/Scenario.ts" />
 /// <reference path="../CanvasManipulator/CanvasManipulator.ts" />
-/// <reference path="./../FrictionControl/FrictionControl.ts" />
-var Starter = (function () {
-    function Starter(scenario) {
+/// <reference path="./../CollisionControl/CollisionControl.ts" />
+var MainModule = (function () {
+    function MainModule(scenario) {
         this.template = scenario.template;
         this.startTemplate();
         var canvasManipulator = new CanvasManipulator(scenario);
@@ -130,8 +193,8 @@ var Starter = (function () {
         canvasManipulator.drawObjects();
         this.template = scenario.template;
     }
-    Starter.prototype.startTemplate = function () {
+    MainModule.prototype.startTemplate = function () {
         document.querySelector("#mainPlace").innerHTML = this.template;
     };
-    return Starter;
+    return MainModule;
 }());

@@ -1,24 +1,159 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html>
 
 <head>
-    <title></title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="./node_modules/materialize-css/dist/css/materialize.min.css" media="screen,projection" />
+    <link href="https://fonts.googleapis.com/css?family=Baloo" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
 
 <body>
-    <div id="mainPlace"></div>
-    <script src="./build/script.js"></script>
+    <nav style="margin-bottom: 10px;">
+        <div class="nav-wrapper #00b0ff light-blue accent-3">
+            <a href="#!" class="brand-logo center">Block Game Engine</a>
+            <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+            <ul class="right hide-on-med-and-down">
 
+            </ul>
+            <ul class="side-nav" id="mobile-demo">
+
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="row">
+
+            <div class="col s12" style="margin-bottom: 0; padding-bottom: 0;">
+                <ul id="tabs-swipe-demo" class="tabs #e1f5fe light-blue lighten-5">
+                    <li class="tab col s3"><a class="active" href="#test-swipe-1">Snake Game</a></li>
+                    <li class="tab col s3"><a href="#test-swipe-2">Space Game</a></li>
+                </ul>
+                <div id="test-swipe-1" class="col s12 #f5f5f5 grey lighten-4">
+                    <div class="row">
+                        <div class="card col s5">
+                            <div class="card-content">
+                                <span class="card-title center blue-text text-darken-2">Menu</span>
+                                <div class="card-tabs">
+                                    <ul class="tabs tabs-fixed-width">
+                                        <li class="tab"><a class="active" class="active" href="#snakeGamePlay">Jogar</a></li>
+                                        <li class="tab"><a href="#spaceGameRank">Ranking</a></li>
+                                    </ul>
+                                    <div class="card-content">
+                                        <div id="snakeGamePlay">
+                                            <form>
+                                                <div class="row">
+                                                    <div class="input-field col s12">
+                                                        <i class="material-icons prefix">account_circle</i>
+                                                        <input id="icon_prefix" type="text" class="validate">
+                                                        <label for="icon_prefix">Apelido</label>
+                                                    </div>
+                                                    <div class="input-field col s12">
+                                                        <i class="material-icons prefix">games</i>
+                                                        <select>
+                                                            <option value="" disabled selected>Dificuldade</option>
+                                                            <option value="1">Fácil</option>
+                                                            <option value="2">Médio</option>
+                                                            <option value="3">Difícil</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="input-field col s12">
+                                                        <i class="material-icons prefix">language</i>
+                                                        <select>
+                                                            <option value="" disabled selected>Cenário</option>
+                                                            <option value="1">Cenário 1</option>
+                                                            <option value="2">Cenário 2</option>
+                                                            <option value="3">Cenário 3</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="input-field col s12 center">
+                                                        <a class="waves-effect waves-light btn #f57f17 #01579b light-blue darken-4"><i class="material-icons right">play_arrow</i>Jogar</a>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div id="spaceGameRank">
+                                            <div class="row">
+                                                <div class="col s12">
+                                                    <table class="bordered highlight">
+                                                        <thead>
+                                                            <tr>
+                                                                <th></th>
+                                                                <th>Jogador</th>
+                                                                <th>Pontuação</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="strong">1</td>
+                                                                <td>Adriano</td>
+                                                                <td>26</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>2</td>
+                                                                <td>Adriano</td>
+                                                                <td>26</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>3</td>
+                                                                <td>Adriano</td>
+                                                                <td>26</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>4</td>
+                                                                <td>Adriano</td>
+                                                                <td>26</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>5</td>
+                                                                <td>Adriano</td>
+                                                                <td>26</td>
+                                                            </tr>
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="col s7">
+                            <div class="card-panel teal">
+                                <div class="card-panel #e0f2f1 teal lighten-5 center" style="font-family: 'Baloo', cursive; font-size: x-large; padding-top: 0; padding-bottom: 0;">
+                                    Score: 4
+                                </div>
+                                <canvas class="#e0f2f1 teal lighten-5" id="myCanvas" width="485" height="390"></canvas>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div id="test-swipe-2" class="col s12 red">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="page-footer #00b0ff light-blue accent-3" style="padding: 0; margin: 0;">
+        <div class="footer-copyright">
+            <div class="container">
+                © 2017 Block Game Engine
+            </div>
+        </div>
+    </footer>
+    <script type="text/javascript" src="./node_modules/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="./node_modules/materialize-css/dist/js/materialize.min.js"></script>
     <script>
-        window.onload = initPage;
-
-        function initPage() {
-            let starter = new Starter();
-        }
+        $(document).ready(function() {
+            $(".button-collapse").sideNav();
+            $('ul.tabs').tabs();
+            $('select').material_select();
+        })
     </script>
-
 </body>
 
 </html>
