@@ -5,11 +5,13 @@ class Game{
     private _animatedObject: ObjectDefault;
     private _animator: Animator;
     private _gameScore: number;
+    private _elementScore: any;
 
-    constructor(idCanvas: string){
+    constructor(idCanvas: string, elementScore: any){
         this._idCanvas = idCanvas;
         this._canvasManipulator = new CanvasManipulator(idCanvas);
         this._gameScore = 0;
+        this._elementScore = elementScore;
     }
 
     get gameScore(): number{
@@ -18,6 +20,11 @@ class Game{
 
     public plusGameScore(scoreToAcress: number){
         this._gameScore += scoreToAcress;
+        this.updateElementGameScore();
+    }
+
+    private updateElementGameScore(){
+        this._elementScore.text = this._gameScore;
     }
 
     public startGame(){
@@ -35,7 +42,7 @@ class Game{
     }
 
     public gameOver(){
-
+        return;
     }
 
     get animator(): Animator{
@@ -47,8 +54,6 @@ class Game{
     }
 
     public startScenario(){
-        if(this._selectedScenario == null)
-            throw new Error("Ainda não foi selecionado nenhum cenário.");
         this._selectedScenario.drawObjects(this._canvasManipulator);    
     }
 

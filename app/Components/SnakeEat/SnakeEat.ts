@@ -1,5 +1,9 @@
 class SnakeEat extends ObjectDefault{
 
+    public updateDirection(direction: Directions): void {
+        return;
+    }
+
     public move(): void {
         return;
     }

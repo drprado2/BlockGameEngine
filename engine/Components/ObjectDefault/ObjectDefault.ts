@@ -8,51 +8,7 @@ abstract class ObjectDefault{
         this.currentDirection = Directions.right;
      }
 
-     public updateDirection(direction: Directions): void{
-         if(this.canChangeDirection(direction))
-            this.currentDirection = direction;
-     }
-
-     protected canChangeDirection(newDirection: Directions): boolean {
-         switch(newDirection){
-            case Directions.up: {
-                let firstBlock = this.bodyBlocks[0];
-                let newPositionX = firstBlock.positionX;
-                let newPositionY = firstBlock.positionY - globalDistanceMove;
-                if (this.bodyBlocks[1].positionX == newPositionX &&
-                    this.bodyBlocks[1].positionY == newPositionY)
-                    return false;
-                return true;    
-            }
-            case Directions.right: {
-                let firstBlock = this.bodyBlocks[0];
-                let newPositionX = firstBlock.positionX + globalDistanceMove;
-                let newPositionY = firstBlock.positionY;
-                if (this.bodyBlocks[1].positionX == newPositionX &&
-                    this.bodyBlocks[1].positionY == newPositionY)
-                    return false;
-            }
-            case Directions.down: {
-                let firstBlock = this.bodyBlocks[0];
-                let newPositionX = firstBlock.positionX;
-                let newPositionY = firstBlock.positionY + globalDistanceMove;
-                if (this.bodyBlocks[1].positionX == newPositionX &&
-                    this.bodyBlocks[1].positionY == newPositionY)
-                    return false;
-            }
-            case Directions.left: {
-                let firstBlock = this.bodyBlocks[0];
-                let newPositionX = firstBlock.positionX - globalDistanceMove;
-                let newPositionY = firstBlock.positionY;
-                if (this.bodyBlocks[1].positionX == newPositionX &&
-                    this.bodyBlocks[1].positionY == newPositionY)
-                    return false;
-            }
-            default: {
-                return true;
-            }
-         }
-    }
+     public abstract updateDirection(direction: Directions): void;
 
     public abstract move(): void;    
 
@@ -70,7 +26,7 @@ abstract class ObjectDefault{
     }
 
     draw(canvas: CanvasManipulator): void{
-        this.bodyBlocks.forEach(block => block.draw(canvas.contextCanvas));
+        this.bodyBlocks.forEach(block => block.draw(canvas));
     }
 
     refresh(canvas: CanvasManipulator): void{
@@ -78,6 +34,6 @@ abstract class ObjectDefault{
     }
 
     selfDestroy(canvas: CanvasManipulator): void{
-        this.bodyBlocks.forEach(block => block.selfDestroy(canvas.contextCanvas));
+        this.bodyBlocks.forEach(block => block.selfDestroy(canvas));
     }
 }

@@ -41,33 +41,31 @@
                                     </ul>
                                     <div class="card-content">
                                         <div id="snakeGamePlay">
-                                            <form>
+                                            <form name="form-play" id="form-play">
                                                 <div class="row">
                                                     <div class="input-field col s12">
                                                         <i class="material-icons prefix">account_circle</i>
-                                                        <input id="icon_prefix" type="text" class="validate">
+                                                        <input id="icon_prefix" maxlength="12" type="text" class="validate" required>
                                                         <label for="icon_prefix">Apelido</label>
                                                     </div>
                                                     <div class="input-field col s12">
                                                         <i class="material-icons prefix">games</i>
-                                                        <select>
-                                                            <option value="" disabled selected>Dificuldade</option>
-                                                            <option value="1">Fácil</option>
+                                                        <select name="difficulty-select" id="difficulty-select">   
+                                                            <option value="1" selected>Fácil</option>
                                                             <option value="2">Médio</option>
                                                             <option value="3">Difícil</option>
                                                         </select>
                                                     </div>
                                                     <div class="input-field col s12">
                                                         <i class="material-icons prefix">language</i>
-                                                        <select>
-                                                            <option value="" disabled selected>Cenário</option>
-                                                            <option value="1">Cenário 1</option>
+                                                        <select name="scenario-select" id="scenario-select">
+                                                            <option value="1" selected>Sem Obstáculos</option>
                                                             <option value="2">Cenário 2</option>
                                                             <option value="3">Cenário 3</option>
                                                         </select>
                                                     </div>
                                                     <div class="input-field col s12 center">
-                                                        <a class="waves-effect waves-light btn #f57f17 #01579b light-blue darken-4"><i class="material-icons right">play_arrow</i>Jogar</a>
+                                                        <button class="waves-effect waves-light btn #f57f17 #01579b light-blue darken-4" type="submit"><i class="material-icons right">play_arrow</i>Jogar</button>
                                                     </div>
                                                 </div>
                                             </form>
@@ -124,7 +122,7 @@
                         <div class="col s7">
                             <div class="card-panel teal">
                                 <div class="card-panel #e0f2f1 teal lighten-5 center" style="font-family: 'Baloo', cursive; font-size: x-large; padding-top: 0; padding-bottom: 0;">
-                                    Score: 4
+                                    Score: <span id="score">0</span>
                                 </div>
                                 <canvas class="#e0f2f1 teal lighten-5" id="myCanvas" width="485" height="390"></canvas>
                             </div>
@@ -147,13 +145,8 @@
     </footer>
     <script type="text/javascript" src="./node_modules/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="./node_modules/materialize-css/dist/js/materialize.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $(".button-collapse").sideNav();
-            $('ul.tabs').tabs();
-            $('select').material_select();
-        })
-    </script>
+    <script type="text/javascript" src="./build/script.js"></script>
+    <script type="text/javascript" src="./main.js"></script>
 </body>
 
 </html>

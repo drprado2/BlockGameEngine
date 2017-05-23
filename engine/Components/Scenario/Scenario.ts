@@ -3,6 +3,7 @@ abstract class Scenario {
     protected _objectsToDraw: Array<ObjectDefault>;
 
     constructor(){
+        this.initObjects();
     }
 
     protected abstract initObjects(): void;
@@ -18,14 +19,20 @@ abstract class Scenario {
     }
 
     public drawObjects(canvas: CanvasManipulator): void{
+        if(this._objectsToDraw.length == 0)
+            return;
         this._objectsToDraw.forEach(obj => obj.draw(canvas));
     }
 
     public refreshObjects(canvas: CanvasManipulator): void{
+        if(this._objectsToDraw.length == 0)
+            return;
         this._objectsToDraw.forEach(obj => obj.refresh(canvas));
     }
 
     public destroyAllObjects(canvas: CanvasManipulator): void{
+        if(this._objectsToDraw.length == 0)
+            return;
         this._objectsToDraw.forEach(obj => obj.selfDestroy(canvas));
     }
 }

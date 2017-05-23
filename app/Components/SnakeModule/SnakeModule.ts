@@ -10,21 +10,22 @@
 class SnakeModule{
     private _game: Game;
 
-    constructor(idCanvas: string){
-        this._game = new Game(idCanvas);
+    constructor(idCanvas: string, scoreElement: any){
+        this._game = new Game(idCanvas, scoreElement);
     }
 
     public createScenario(scenario: Scenarios){
         switch(scenario){
             case Scenarios.ScenarioOutObstacles: {
                 this._game.selectedScenario = new ScenarioOutObstacles();
+                this._game.startScenario();
                 break;
             }
         }
     }
 
     public createSnake(){
-        this._game.animatedObject = new Snake;
+        this._game.animatedObject = new Snake();
     }
 
     get game(): Game{
